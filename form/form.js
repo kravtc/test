@@ -18,20 +18,24 @@ submit_button.addEventListener('click', ()=>{
 
 
 const host_query = '/server/'; /*абстрактный сервер*/
-
+const virtual_host = 'http://my-server';
 async function dataRequest(formData){
     const data = [...formData.entries()];// получаем сущности из объекта формы
     const queryString = data //перебираем массив сущностей и создаем из него строку запроса
         .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
         .join('&');
-
-    const response = await fetch(`${host_query}?${queryString}`);
-    if(response.ok){  /*проверка на успешность получения данных сервером*/
+try{ /*проверка на успешность получения данных сервером*/
+    const response = await fetch(`${virtual_host}${host_query}?${queryString}`);
+    if(response.ok){
         alert("Success")
         return;
     }
     alert('Error')
     return;
+}
+catch(e) {
+    alert(e.message)
+}
 }
 
 
